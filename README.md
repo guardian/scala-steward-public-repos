@@ -9,10 +9,15 @@ The Scala Steward action in this repository is only setup with an access token f
 GitHub repos. If your repo is **private**, you will want to add it to
 https://github.com/guardian/scala-steward-private-repos - note that we pay for
 the GitHub Action minutes for scanning running from that repo, because it's private, but it
-at least will keep your security vulnerabilities private! 
+at least will keep your security vulnerabilities private!
 
 You will probably also want to add some [repository-specific configuration](https://github.com/scala-steward-org/scala-steward/blob/main/docs/repo-specific-configuration.md) to your repo to tune how many PRs get raised, but that's all the config
 that should be necessary!
+
+### Why do we have our own instance of Scala Steward for public repos?
+
+The public instance of Scala Steward run by Frank Thomas, the creator of Scala Steward, was shutdown
+in [June 2022](https://github.com/scala-steward-org/repos/issues/1029), so we need to run our own instance!
 
 ### How is this instance of Scala Steward setup?
 
