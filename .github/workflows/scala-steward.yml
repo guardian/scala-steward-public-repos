@@ -2,7 +2,7 @@ name: Scala Steward
 
 on:
   schedule:
-    - cron: "25 9-18 * * MON-FRI"
+    - cron: "55 9-18 * * MON-FRI"
   # Provide support for manually triggering the workflow via GitHub.
   workflow_dispatch:
 
