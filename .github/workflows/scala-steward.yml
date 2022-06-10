@@ -1,0 +1,30 @@
+name: Scala Steward
+
+on:
+  schedule:
+    - cron: "25 9-18 * * MON-FRI"
+  # Provide support for manually triggering the workflow via GitHub.
+  workflow_dispatch:
+
+jobs:
+  scala-steward:
+    name: scala-steward
+    runs-on: ubuntu-latest
+    steps:
+      # This is necessary to ensure that the most up-to-date version of
+      # REPOSITORIES.md is used.
+      - uses: actions/checkout@v2
+
+      - name: Execute Scala Steward
+        uses: scala-steward-org/scala-steward-action@v2.18.0
+
+        with:
+          # A GitHub personal access token tied to a user that will create
+          # pull requests against your projects to update dependencies. More
+          # on this under the YAML snippet.
+          github-token: ${{ secrets.SCALA_STEWARD_GITHUB_TOKEN }}
+          # A Markdown file with a literal Markdown list of repositories
+          # Scala Steward should monitor.
+          repos-file: REPOSITORIES.md
+          author-email: scala-steward@users.noreply.github.com
+          author-name: Scala Steward
