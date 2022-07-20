@@ -11,6 +11,8 @@ jobs:
     name: scala-steward
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo so our default config at .github/.scala-steward.conf is available.
+        uses: actions/checkout@v3
       - name: Generate token
         id: generate-token
         uses: tibdex/github-app-token@v1
