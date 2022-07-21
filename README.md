@@ -1,7 +1,7 @@
 # scala-steward-public-repos
 _Configuration for the Guardian's in-house instance of Scala Steward, suitable for PUBLIC Guardian repos_
 
-If you have a **public** Guardian repo you'd like to scan with Scala Steward, **request to [install the GitHub app](https://github.com/apps/gu-scala-steward-public-repos) on your repository** - this repo (`scala-steward-public-repos`) is public,
+If you have a **public** Guardian repo you'd like to scan with Scala Steward, **request to [install the GitHub app](https://github.com/apps/gu-scala-steward-public-repos) on your repository and add it to the list in [REPOSITORIES.md](REPOSITORIES.md)** - this repo (`scala-steward-public-repos`) is public,
 so the GitHub Action minutes are [free](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions).
 
 The Scala Steward action in this repository should only be given access to **public**
