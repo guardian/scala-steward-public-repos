@@ -15,6 +15,8 @@ to your repo to tune how many PRs get raised, but note that we have a [default c
 that should already be filtering out the most-noisy dependencies (like `software.amazon.awssdk`, which has automatic
 daily releases without obvious security value).
 
+If you would like Scala Steward to update a non-default branch you can do so by adding branches individually to [REPOSITORIES.md](./REPOSITORIES.md) as described in the [Scala Steward Action docs](https://github.com/scala-steward-org/scala-steward-action#updating-a-custom-branch).
+
 ### Why do we have our own instance of Scala Steward for public repos?
 
 The public instance of Scala Steward run by Frank Thomas, the creator of Scala Steward, was shutdown
