@@ -37,4 +37,4 @@ jobs:
           # Guardian Scala Steward GitHub App
           github-token: ${{ steps.generate-token.outputs.token }}
           repos-file: REPOSITORIES.md
-          repo-conf: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
