@@ -11,7 +11,7 @@ the GitHub Action minutes for scanning running from that repo, because it's priv
 at least will keep your security vulnerabilities private!
 
 You may also want to add some [repository-specific configuration](https://github.com/scala-steward-org/scala-steward/blob/main/docs/repo-specific-configuration.md)
-to your repo to tune how many PRs get raised, but note that we have a [default config](.github/.scala-steward.conf)
+to your repo to tune how many PRs get raised, but note that we have a [default config](scala-steward.conf)
 that should already be filtering out the most-noisy dependencies (like `software.amazon.awssdk`, which has automatic
 daily releases without obvious security value).
 
