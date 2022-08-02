@@ -1,3 +1,4 @@
+- guardian/amiable:dependency-updates
 - guardian/amigo
 - guardian/invoicing-api
 - guardian/manage-help-content-publisher
