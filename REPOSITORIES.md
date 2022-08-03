@@ -1,5 +1,5 @@
-- guardian/amiable:dependency-updates
-- guardian/amigo
+- guardian/amiable:dependency-updates_1
+- guardian/amigo:dependency-updates
 - guardian/invoicing-api
 - guardian/manage-help-content-publisher
 - guardian/marley
@@ -14,9 +14,9 @@
 - guardian/play-googleauth
 - guardian/play-secret-rotation
 - guardian/price-migration-engine
-- guardian/riff-raff
+- guardian/riff-raff:dependency-updates
 - guardian/salesforce-message-handler
-- guardian/security-hq
+- guardian/security-hq:dependency-updates
 - guardian/support-frontend
 - guardian/support-service-lambdas
 - guardian/zuora-6for6-modifier
