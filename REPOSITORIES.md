@@ -21,6 +21,7 @@
 - guardian/riff-raff:dependency-updates
 - guardian/salesforce-message-handler
 - guardian/security-hq:dependency-updates
+- guardian/ssm-scala
 - guardian/support-frontend
 - guardian/support-service-lambdas
 - guardian/zuora-6for6-modifier
