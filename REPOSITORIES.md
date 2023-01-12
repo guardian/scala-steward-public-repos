@@ -1,6 +1,7 @@
 - guardian/amiable:dependency-updates_1
 - guardian/amigo:dependency-updates
 - guardian/discussion-avatar
+- guardian/google-search-indexing-observatory
 - guardian/identity-processes
 - guardian/invoicing-api
 - guardian/janus-app:dependency-updates
