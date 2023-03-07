@@ -10,7 +10,7 @@
 - guardian/members-data-api
 - guardian/membership-common
 - guardian/membership-frontend
-- guardian/mobile-n10n
+- guardian/mobile-n10n:dependency-updates
 - guardian/ophan-backfill-step-function
 - guardian/ophan-geoip-db-refresher
 - guardian/ophan-housekeeper
