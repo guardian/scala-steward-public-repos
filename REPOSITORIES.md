@@ -2,6 +2,7 @@
 - guardian/amigo:dependency-updates
 - guardian/discussion-avatar
 - guardian/google-search-indexing-observatory
+- guardian/grid-feeds
 - guardian/identity-processes
 - guardian/invoicing-api
 - guardian/janus-app:dependency-updates
@@ -26,6 +27,7 @@
 - guardian/ssm-scala:dependency-updates
 - guardian/support-frontend
 - guardian/support-service-lambdas
+- guardian/typerighter
 - guardian/zuora-6for6-modifier
 - guardian/zuora-creditor
 - guardian/zuora-full-export
