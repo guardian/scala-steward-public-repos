@@ -14,6 +14,7 @@
 - guardian/mobile-n10n:dependency-updates
 - guardian/ophan-geoip-db-refresher
 - guardian/ophan-housekeeper
+- guardian/pa-football-client
 - guardian/payment-failure-comms
 - guardian/play-googleauth
 - guardian/play-secret-rotation
