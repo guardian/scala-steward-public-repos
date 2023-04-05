@@ -3,6 +3,7 @@
 - guardian/discussion-avatar
 - guardian/google-search-indexing-observatory
 - guardian/grid-feeds
+- guardian/gu-who
 - guardian/identity-processes
 - guardian/invoicing-api
 - guardian/janus-app:dependency-updates
