@@ -23,6 +23,7 @@
 - guardian/price-migration-engine
 - guardian/prism:dependency-updates
 - guardian/prout
+- guardian/repo-genesis
 - guardian/riff-raff:dependency-updates
 - guardian/salesforce-message-handler
 - guardian/security-hq:dependency-updates
