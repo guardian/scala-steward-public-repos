@@ -1,5 +1,6 @@
 - guardian/amiable:dependency-updates_1
 - guardian/amigo:dependency-updates
+- guardian/amiup
 - guardian/discussion-avatar
 - guardian/google-search-indexing-observatory
 - guardian/grid-feeds
@@ -22,6 +23,7 @@
 - guardian/price-migration-engine
 - guardian/prism:dependency-updates
 - guardian/prout
+- guardian/repo-genesis
 - guardian/riff-raff:dependency-updates
 - guardian/salesforce-message-handler
 - guardian/security-hq:dependency-updates
