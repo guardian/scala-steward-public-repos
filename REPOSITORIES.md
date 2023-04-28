@@ -1,6 +1,7 @@
 - guardian/amiable:dependency-updates_1
 - guardian/amigo:dependency-updates
 - guardian/amiup
+- guardian/cdk-playground
 - guardian/discussion-avatar
 - guardian/google-search-indexing-observatory
 - guardian/grid-feeds
