@@ -33,5 +33,4 @@
 - guardian/support-service-lambdas
 - guardian/typerighter
 - guardian/zuora-6for6-modifier
-- guardian/zuora-creditor
 - guardian/zuora-full-export
