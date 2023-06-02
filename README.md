@@ -8,8 +8,14 @@ instead!_
 
 ## How to add a new *public* repo for scanning by Scala Steward
 
-1. Add your repo to the list in [REPOSITORIES.md](REPOSITORIES.md)
-2. Request to [install our GitHub app](https://github.com/apps/gu-scala-steward-public-repos) on your repo
+* **Grant [our GitHub app](https://github.com/apps/gu-scala-steward-public-repos) access to your repo** (click
+  [`Configure`](https://github.com/organizations/guardian/settings/installations/26822732) - you may need
+  a repo admin to do this) 
+  * You can check if the app is installed on your repo by examining `/settings/installations`
+    (eg https://github.com/guardian/amigo/settings/installations):
+    ![image](https://github.com/guardian/scala-steward-public-repos/assets/52038/9b7dc7b7-a6fc-46d6-b313-a4ae97d5d3ad)
+* Only add your repo to `REPOSITORIES.md` if you're specifying a non-default branch to update (after
+  PR [#40](https://github.com/guardian/scala-steward-public-repos/pull/40) this is probably no longer needed).
 
 This repo (`scala-steward-public-repos`) is public, so the GitHub Action minutes are
 [free](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions).
