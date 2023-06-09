@@ -1,36 +1,12 @@
+# Our Scala Steward GitHub Action will run on any repo that our GitHub App is granted access to.
+#
+# You only need to add your repo to *this* file if you're specifying a non-default branch to update.
+# Thanks to https://github.com/guardian/scala-steward-public-repos/pull/40 this is probably no longer necessary!
+
 - guardian/amiable:dependency-updates_1
 - guardian/amigo:dependency-updates
-- guardian/amiup
-- guardian/apps-rendering-api-models
-- guardian/discussion-avatar
-- guardian/google-search-indexing-observatory
-- guardian/grid-feeds
-- guardian/gu-who
-- guardian/identity-processes
-- guardian/invoicing-api
 - guardian/janus-app:dependency-updates
-- guardian/manage-help-content-publisher
-- guardian/marley
-- guardian/members-data-api
-- guardian/membership-common
-- guardian/membership-frontend
-- guardian/mobile-n10n
-- guardian/ophan-geoip-db-refresher
-- guardian/ophan-housekeeper
-- guardian/pa-football-client
-- guardian/payment-failure-comms
-- guardian/play-googleauth
-- guardian/play-secret-rotation
-- guardian/price-migration-engine
 - guardian/prism:dependency-updates
-- guardian/prout
-- guardian/repo-genesis
 - guardian/riff-raff:dependency-updates
-- guardian/salesforce-message-handler
 - guardian/security-hq:dependency-updates
 - guardian/ssm-scala:dependency-updates
-- guardian/support-frontend
-- guardian/support-service-lambdas
-- guardian/typerighter
-- guardian/zuora-6for6-modifier
-- guardian/zuora-full-export
