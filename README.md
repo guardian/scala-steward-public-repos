@@ -9,7 +9,7 @@ instead!_
 ## How to add a new *public* repo for scanning by Scala Steward
 
 * **Grant [our GitHub app](https://github.com/apps/gu-scala-steward-public-repos) access to your repo** (click
-  [`Configure`](https://github.com/organizations/guardian/settings/installations/26822732) - you may need
+  [`Configure`](https://github.com/apps/gu-scala-steward-public-repos/installations/26822732) - you may need
   a repo admin to do this) 
   * You can check if the app is installed on your repo by examining `/settings/installations`
     (eg https://github.com/guardian/amigo/settings/installations):
