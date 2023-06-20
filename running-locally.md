@@ -27,8 +27,9 @@ when we run it in [our GitHub workflow](https://github.com/guardian/scala-stewar
    chmod 755 ~/code/scala-steward-workspace/askpass.sh
    ```
 5. Download a [temporary GitHub App private key](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps)
-   (a `.private-key.pem` file) for our [gu-scala-steward-public-repos](https://github.com/apps/gu-scala-steward-public-repos)
-   GitHub App. Remember to [**DELETE THIS KEY**](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#deleting-private-keys) when you've finished your debugging work.
+   (a `.private-key.pem` file) for the GitHub App (only [GitHub App Managers](https://docs.github.com/en/apps/maintaining-github-apps/about-github-app-managers)
+   for [our gu-scala-steward-public-repos app](https://github.com/organizations/guardian/settings/permissions/integrations/gu-scala-steward-public-repos/managers)
+   can generate/download new keys for the app). Remember to [**DELETE THIS KEY**](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps#deleting-private-keys) when you've finished your debugging work.
 6. Enter the sbt console in the Scala Steward project, and execute this sbt command, which uses all
    the different file resources you just set up (note your file paths won't start `/Users/Roberto_Tyley`!):
    > core/run --do-not-fork --workspace "/Users/Roberto_Tyley/code/scala-steward-workspace" --repos-file "/Users/Roberto_Tyley/code/scala-steward-public-repos/REPOSITORIES.md" --repo-config "/Users/Roberto_Tyley/code/scala-steward-public-repos/scala-steward.conf" --forge-login "gu-scala-steward-public-repos" --git-author-email "108136057+gu-scala-steward-public-repos[bot]@users.noreply.github.com" --github-app-id 214238 --github-app-key-file "/Users/Roberto_Tyley/Downloads/gu-scala-steward-public-repos.2023-06-14.private-key.pem" --git-ask-pass "/Users/Roberto_Tyley/code/scala-steward-workspace/askpass.sh"
