@@ -36,4 +36,6 @@ when we run it in [our GitHub workflow](https://github.com/guardian/scala-stewar
 7. Attach your debugger - for IntelliJ, note that when running in the
    [IntelliJ sbt shell](https://www.jetbrains.com/help/idea/sbt-support.html#sbt_shell),
    a discrete but useful `Attach debugger` affordance will be shown in the console:
-   https://github.com/guardian/scala-steward-public-repos/assets/52038/0c7cb2f6-9d9b-4615-b56c-301db9b5081c
+
+https://github.com/guardian/scala-steward-public-repos/assets/52038/0bf51171-6023-4f5c-92e8-0416eee19ea8
+
