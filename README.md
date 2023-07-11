@@ -2,6 +2,8 @@
 
 [![Public Repos Scala Steward](https://github.com/guardian/scala-steward-public-repos/actions/workflows/public-repos-scala-steward.yml/badge.svg)](https://github.com/guardian/scala-steward-public-repos/actions/workflows/public-repos-scala-steward.yml)
 
+[Scala Steward](https://github.com/scala-steward-org/scala-steward) is a bot that helps you keep your Scala projects up-to-date! ✨
+
 _Looking to run Scala Steward on a **private** Guardian repo? Go to
 [guardian/scala-steward-private-repos](https://github.com/guardian/scala-steward-private-repos)
 instead!_
