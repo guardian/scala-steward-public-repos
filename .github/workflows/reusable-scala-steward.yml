@@ -35,3 +35,4 @@ jobs:
           github-app-key: ${{ secrets.private_key }}
           repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
           repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          other-args: "--add-labels"
