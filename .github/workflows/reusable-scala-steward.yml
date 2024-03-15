@@ -31,7 +31,6 @@ jobs:
         with:
           java-version: "21"
           distribution: "corretto"
-          cache: sbt
 
       - name: Execute Scala Steward
         uses: scala-steward-org/scala-steward-action@v2.64.0
