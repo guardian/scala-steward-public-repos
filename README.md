@@ -14,7 +14,7 @@ instead! This repo (`scala-steward-public-repos`) is public, so the GitHub Actio
 Just grant our GitHub app [@gu-scala-steward-public-repos](https://github.com/apps/gu-scala-steward-public-repos) **access to your repo** - you
 will need to be a repo admin to do this): 
 
-1. Click [`Configure`](https://github.com/apps/gu-scala-steward-public-repos/installations/26822732) on the GitHub app's page: ![image](https://github.com/guardian/scala-steward-public-repos/assets/52038/7f120478-e5e1-4117-9e35-323cc170d982)
+1. Click `Configure` on [the GitHub app's page](https://github.com/apps/gu-scala-steward-public-repos): ![image](https://github.com/guardian/scala-steward-public-repos/assets/52038/7f120478-e5e1-4117-9e35-323cc170d982)
 2. On the next page, add your repo to the list of selected repos, and click `Save`.
 3. Manually run [the GitHub workflow](https://github.com/guardian/scala-steward-public-repos/actions/workflows/public-repos-scala-steward.yml)
    to check that Scala Steward is now processing your repo too - **you're all done!**
