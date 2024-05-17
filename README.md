@@ -18,8 +18,3 @@ will need to be a repo admin to do this):
 2. On the next page, add your repo to the list of selected repos, and click `Save`.
 3. Manually run [the GitHub workflow](https://github.com/guardian/scala-steward-public-repos/actions/workflows/public-repos-scala-steward.yml)
    to check that Scala Steward is now processing your repo too - **you're all done!**
-
-### How to double-check if Scala Steward has access to your repo
-
-If you need to, check in `/settings/installations` (eg https://github.com/guardian/amigo/settings/installations):
-![image](https://github.com/guardian/scala-steward-public-repos/assets/52038/9b7dc7b7-a6fc-46d6-b313-a4ae97d5d3ad)
