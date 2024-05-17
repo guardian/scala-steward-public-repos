@@ -6,10 +6,8 @@
 
 _Looking to run Scala Steward on a **private** Guardian repo? Go to
 [guardian/scala-steward-private-repos](https://github.com/guardian/scala-steward-private-repos)
-instead!_
-
-This repo (`scala-steward-public-repos`) is public, so the GitHub Action minutes are
-[free](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions).
+instead! This repo (`scala-steward-public-repos`) is public, so the GitHub Action minutes are
+[free](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)._
 
 ## How to add a new *public* repo for scanning by Scala Steward
 
