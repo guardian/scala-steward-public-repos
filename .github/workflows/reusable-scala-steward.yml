@@ -9,6 +9,10 @@ on:
       app_installation_id:
         required: true
         type: string
+      target_artifact:
+        description: 'A specific artifact to target for updates. Format is group_id:artifact_id:version, e.g. com.gu:redirect-resolver:0.0.44'
+        required: false
+        type: string
     secrets:
       private_key:
         required: true
@@ -20,11 +24,25 @@ jobs:
     steps:
       - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
         uses: actions/checkout@v4
+
       - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
+        if: ${{ inputs.target_artifact == '' }}
         uses: actions/checkout@v4
         with:
           repository: guardian/scala-steward-public-repos
           path: common-config
+
+      - name: Conditionally write a custom scala-steward configuration to target a specific artifact
+        if: ${{ inputs.target_artifact != '' }}
+        run: |
+          GROUP_ID=$(cut -d':' -f1)
+          ARTIFACT_ID=$(cut -d':' -f2)
+          VERSION=$(cut -d':' -f3)
+          cat << EOF > common-config/scala-steward.conf
+          updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
+          commits.message = "[TEST - please ignore]: Update ${artifactName} from ${currentVersion} to ${nextVersion}"
+          EOF
+          cat common-config/scala-steward.conf
 
       - name: Setup Java
         uses: actions/setup-java@v4

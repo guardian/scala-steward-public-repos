@@ -5,12 +5,17 @@ on:
     - cron: "55 9-18 * * MON-FRI"
   # Provide support for manually triggering the workflow via GitHub.
   workflow_dispatch:
-
+    inputs:
+      target_artifact:
+        description: 'A specific artifact to target for updates. Format is group_id:artifact_id:version, e.g. com.gu:redirect-resolver:0.0.44'
+        required: false
+        type: string
 jobs:
   call-reusable-workflow:
     uses: ./.github/workflows/reusable-scala-steward.yml
     with:
       app_id: 214238
       app_installation_id: 26822732
+      target_artifact: ${{ inputs.target_artifact }}
     secrets:
       private_key: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
