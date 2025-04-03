@@ -38,6 +38,7 @@ jobs:
           GROUP_ID=$(cut -d':' -f1)
           ARTIFACT_ID=$(cut -d':' -f2)
           VERSION=$(cut -d':' -f3)
+          mkdir common-config
           cat << EOF > common-config/scala-steward.conf
           updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
           commits.message = "[TEST - please ignore]: Update ${artifactName} from ${currentVersion} to ${nextVersion}"
