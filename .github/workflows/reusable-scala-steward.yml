@@ -32,6 +32,9 @@ jobs:
           repository: guardian/scala-steward-public-repos
           path: common-config
 
+      - name: Install xq
+        run: sudo apt install -y xq
+
       - name: Conditionally write a custom scala-steward configuration to target a specific artifact
         env:
           GH_TOKEN: ${{ github.token }}
