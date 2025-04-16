@@ -33,11 +33,13 @@ jobs:
           path: common-config
 
       - name: Conditionally write a custom scala-steward configuration to target a specific artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
         if: ${{ inputs.target_pr != '' }}
         run: |
           TARGET_PR="${{ inputs.target_pr }}"
 
-          VERSION=$(gh pr view $PR_URL -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
+          VERSION=$(gh pr view $TARGET_PR -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
 
           TAG_URL=$(gh api \
             -H "Accept: application/vnd.github+json" \
