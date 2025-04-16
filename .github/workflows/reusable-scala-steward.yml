@@ -54,7 +54,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
               $TAG_URL \
-              -q ".message" | grep ".pom$" | head -n 1 | cut -d" " -f3)
+              -q ".message" | grep ".pom$" | tac | head -n 1 | cut -d" " -f3)
           
           POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1))
 
