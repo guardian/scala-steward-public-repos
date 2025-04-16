@@ -43,7 +43,11 @@ jobs:
           cat << EOF > common-config/scala-steward.conf
           updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
           commits.message = "[TEST - please ignore]: Update \${artifactName} from \${currentVersion} to \${nextVersion}"
-          pullRequests.grouping = [{ name = "$TARGET_ARTIFACT", title = "[TEST - please ignore]: Update $TARGET_ARTIFACT" }]
+          pullRequests.grouping = [{
+            name = "$TARGET_ARTIFACT",
+            title = "[TEST - please ignore]: Update $TARGET_ARTIFACT",
+            filter = [{"group" = "*"}]
+          }]
           EOF
           cat common-config/scala-steward.conf
 
