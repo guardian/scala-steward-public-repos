@@ -54,12 +54,12 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
               $TAG_URL \
-              -q ".message" | grep ".pom$" | tac | head -n 1 | cut -d" " -f3)
-          
+              -q ".message" | grep ".pom$" | head -n 1 | cut -d" " -f3)
+
           POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1))
 
           GROUP_ID=$(echo $POM | xq -x /project/groupId)
-          ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId)
+          ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev)
           TARGET_ARTIFACT="$GROUP_ID:$ARTIFACT_ID:$VERSION"
 
           mkdir common-config
