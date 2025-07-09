@@ -57,4 +57,4 @@ jobs:
           repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
           repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
           other-args: "--add-labels"
-          scala-steward-version: "0.33.0-66-55f6dc6a-SNAPSHOT"
+          scala-steward-version: "0.34.0-30-0c7991de-SNAPSHOT"
