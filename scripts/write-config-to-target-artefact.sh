@@ -1,4 +1,5 @@
 VERSION=$(gh pr view $TARGET_PR -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
+PR_DETAILS=$(gh pr view $TARGET_PR --json number,headRepository)
 
 TAG_URL=$(gh api \
   -H "Accept: application/vnd.github+json" \
@@ -17,6 +18,7 @@ POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1)
 GROUP_ID=$(echo $POM | xq -x /project/groupId)
 ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev)
 TARGET_ARTIFACT="$GROUP_ID:$ARTIFACT_ID:$VERSION"
+GROUPING_NAME=$(gh pr view $TARGET_PR --json number,headRepository | jq -r '. | "\(.headRepository.name)_pr-\(.number)"')
 
 mkdir common-config
 cat << EOF > common-config/scala-steward.conf
@@ -24,7 +26,7 @@ updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version =
 commits.message = "[TEST - please ignore]: Update \${artifactName} from \${currentVersion} to \${nextVersion}"
 pullRequests.draft = true
 pullRequests.grouping = [{
-  name = "$TARGET_ARTIFACT",
+  name = "$GROUPING_NAME",
   title = "[TEST - please ignore]: Update $TARGET_ARTIFACT",
   filter = [{"group" = "*"}]
 }]
