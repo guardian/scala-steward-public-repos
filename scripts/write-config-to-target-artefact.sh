@@ -1,4 +1,19 @@
 VERSION=$(gh pr view $TARGET_PR -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
+
+echo "Found version: $VERSION"
+
+if [[ -z "$VERSION" ]]; then
+  cat << EndOfFile >> $GITHUB_STEP_SUMMARY
+# Run failed
+Couldn't find a preview release for the specified PR: [$TARGET_PR]($TARGET_PR). Does it have one yet?
+
+You can create a preview release by following [these instructions.](https://github.com/guardian/gha-scala-library-release-workflow/blob/main/docs/making-a-release.md)
+EndOfFile
+  exit 1
+fi
+
+set -e
+
 PR_DETAILS=$(gh pr view $TARGET_PR --json number,headRepository)
 
 TAG_URL=$(gh api \
@@ -20,8 +35,7 @@ ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev
 TARGET_ARTIFACT="$GROUP_ID:$ARTIFACT_ID:$VERSION"
 GROUPING_NAME=$(gh pr view $TARGET_PR --json url | jq -r ".url" | cut -d/ -f 4-)
 
-mkdir common-config
-cat << EOF > common-config/scala-steward.conf
+cat << EOF > targeted-scala-steward.conf
 updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
 commits.message = "[TEST - please ignore]: Update \${artifactName} from \${currentVersion} to \${nextVersion}"
 pullRequests.draft = true
@@ -32,4 +46,4 @@ pullRequests.grouping = [{
 }]
 updates.allowPreReleases = [{ groupId = "$GROUP_ID" }]
 EOF
-cat common-config/scala-steward.conf
+cat targeted-scala-steward.conf

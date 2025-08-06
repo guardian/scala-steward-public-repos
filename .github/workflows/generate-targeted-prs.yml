@@ -1,17 +1,12 @@
 name: Reusable Scala Steward workflow
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      app_id:
-        required: true
+      target_pr:
+        description: 'The URL of the PR that contains the release to target for updates'
+        required: false
         type: string
-      app_installation_id:
-        required: true
-        type: string
-    secrets:
-      private_key:
-        required: true
 
 jobs:
   scala-steward:
@@ -20,11 +15,22 @@ jobs:
     steps:
       - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
         uses: actions/checkout@v4
+
       - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
+        if: ${{ inputs.target_pr == '' }}
         uses: actions/checkout@v4
         with:
           repository: guardian/scala-steward-public-repos
           path: common-config
+
+      - name: Install xq
+        run: sudo apt install -y xq
+
+      - name: Write a custom scala-steward configuration to target a specific artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PR: ${{ inputs.target_pr }}
+        run: ./scripts/write-config-to-target-artefact.sh
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -35,9 +41,9 @@ jobs:
       - name: Execute Scala Steward
         uses: scala-steward-org/scala-steward-action@v2.75.0
         with:
-          github-app-id: ${{ inputs.app_id }}
-          github-app-installation-id: ${{ inputs.app_installation_id }}
-          github-app-key: ${{ secrets.private_key }}
-          repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
-          repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          github-app-id: 214238
+          github-app-installation-id: 26822732
+          github-app-key: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
+          repo-config: targeted-scala-steward.conf # from checkout of guardian/scala-steward-public-repos
           other-args: "--add-labels"
+          
