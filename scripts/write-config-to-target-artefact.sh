@@ -18,7 +18,7 @@ POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1)
 GROUP_ID=$(echo $POM | xq -x /project/groupId)
 ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev)
 TARGET_ARTIFACT="$GROUP_ID:$ARTIFACT_ID:$VERSION"
-GROUPING_NAME=$(gh pr view $TARGET_PR --json number,headRepository | jq -r '. | "\(.headRepository.name)_pr-\(.number)"')
+GROUPING_NAME=$(gh pr view $TARGET_PR --json url | jq -r ".url" | cut -d/ -f 4-)
 
 mkdir common-config
 cat << EOF > common-config/scala-steward.conf
