@@ -10,18 +10,13 @@ on:
 
 jobs:
   scala-steward:
+    permissions:
+      contents: read
+      pull-requests: read
     name: scala-steward
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
-        uses: actions/checkout@v4
-
-      - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
-        if: ${{ inputs.target_pr == '' }}
-        uses: actions/checkout@v4
-        with:
-          repository: guardian/scala-steward-public-repos
-          path: common-config
+      - uses: actions/checkout@v4
 
       - name: Install xq
         run: sudo apt install -y xq
@@ -46,4 +41,3 @@ jobs:
           github-app-key: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
           repo-config: targeted-scala-steward.conf # from checkout of guardian/scala-steward-public-repos
           other-args: "--add-labels"
-          
