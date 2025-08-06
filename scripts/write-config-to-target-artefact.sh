@@ -1,8 +1,7 @@
 VERSION=$(gh pr view $TARGET_PR -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
 
-echo "Found version: $VERSION"
-
 if [[ -z "$VERSION" ]]; then
+  echo "No version found for PR $TARGET_PR. Exiting."
   cat << EndOfFile >> $GITHUB_STEP_SUMMARY
 # Run failed
 Couldn't find a preview release for the specified PR: [$TARGET_PR]($TARGET_PR). Does it have one yet?
@@ -11,6 +10,8 @@ You can create a preview release by following [these instructions.](https://gith
 EndOfFile
   exit 1
 fi
+
+echo "Found version: $VERSION"
 
 set -e
 
