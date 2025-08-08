@@ -1,4 +1,4 @@
-name: Reusable Scala Steward workflow
+name: Generate targeted PRs
 
 on:
   workflow_dispatch:
