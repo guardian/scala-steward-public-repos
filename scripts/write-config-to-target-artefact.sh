@@ -15,13 +15,13 @@ echo "Found version: $VERSION"
 
 set -e
 
-PR_DETAILS=$(gh pr view $TARGET_PR --json number,headRepository)
-
 TAG_URL=$(gh api \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
     /repos/guardian/redirect-resolver/git/ref/tags/v$VERSION \
     -q ".object.url" | sed "s/https:\/\/api.github.com\///")
+
+echo "Tag url: $TAG_URL"
 
 ARTIFACT_PATH=$(gh api \
   -H "Accept: application/vnd.github+json" \
@@ -29,11 +29,18 @@ ARTIFACT_PATH=$(gh api \
     $TAG_URL \
     -q ".message" | grep ".pom$" | head -n 1 | cut -d" " -f3)
 
+echo "Artifact path: $ARTIFACT_PATH"
+
 POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1))
+
+echo "POM ... is large"
 
 GROUP_ID=$(echo $POM | xq -x /project/groupId)
 ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev)
+
 GROUPING_NAME=$(gh pr view $TARGET_PR --json url | jq -r ".url" | cut -d/ -f 4-)
+
+echo "Grouping name: $GROUPING_NAME"
 
 cat << EOF > targeted-scala-steward.conf
 updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
