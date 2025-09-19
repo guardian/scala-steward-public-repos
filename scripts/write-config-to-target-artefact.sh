@@ -35,7 +35,6 @@ POM=$(curl https://repo1.maven.org/maven2/$(echo $ARTIFACT_PATH | cut -d" " -f1)
 
 GROUP_ID=$(echo $POM | xq -x /project/groupId)
 ARTIFACT_ID=$(echo $POM | xq -x /project/artifactId | rev | cut -d"_" -f2- | rev)
-TARGET_ARTIFACT="$GROUP_ID:$ARTIFACT_ID:$VERSION"
 GROUPING_NAME=$(gh pr view $TARGET_PR --json url | jq -r ".url" | cut -d/ -f 4-)
 
 cat << EOF > targeted-scala-steward.conf
@@ -44,9 +43,10 @@ commits.message = "Update \${artifactName} from \${currentVersion} to \${nextVer
 pullRequests.draft = true
 pullRequests.grouping = [{
   name = "$GROUPING_NAME",
-  title = "Update $TARGET_ARTIFACT",
+  title = "Update \`$GROUP_ID:$ARTIFACT_ID\` to \`$VERSION\`",
   filter = [{"group" = "*"}]
 }]
+pullRequests.customLabels = ["targeted-update"]
 updates.allowPreReleases = [{ groupId = "$GROUP_ID" }]
 EOF
 cat targeted-scala-steward.conf
