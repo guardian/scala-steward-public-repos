@@ -38,11 +38,11 @@ GROUPING_NAME=$(gh pr view $TARGET_PR --json url | jq -r ".url" | cut -d/ -f 4-)
 
 cat << EOF > targeted-scala-steward.conf
 updates.allow = [{ groupId = "$GROUP_ID", artifactId = "$ARTIFACT_ID", version = "$VERSION" }]
-commits.message = "[TEST - please ignore]: Update \${artifactName} from \${currentVersion} to \${nextVersion}"
+commits.message = "Update \${artifactName} from \${currentVersion} to \${nextVersion}"
 pullRequests.draft = true
 pullRequests.grouping = [{
   name = "$GROUPING_NAME",
-  title = "[TEST - please ignore]: Update $TARGET_ARTIFACT",
+  title = "Update $TARGET_ARTIFACT",
   filter = [{"group" = "*"}]
 }]
 updates.allowPreReleases = [{ groupId = "$GROUP_ID" }]
