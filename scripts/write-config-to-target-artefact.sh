@@ -1,3 +1,5 @@
+#! /bin/bash
+
 VERSION=$(gh pr view $TARGET_PR -c --json comments -q "[.comments[] | select(.author.login == \"gu-scala-library-release\")][-1].body" | grep "\-PREVIEW")
 
 if [[ -z "$VERSION" ]]; then
