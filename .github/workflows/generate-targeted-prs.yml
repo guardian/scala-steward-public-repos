@@ -17,27 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-
-      - name: Install xq
-        run: sudo apt install -y xq
-
+      - uses: guardian/setup-scala@v1
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_PR: ${{ inputs.target_pr }}
-        run: ./scripts/write-config-to-target-artefact.sh
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          java-version: "21"
-          distribution: "corretto"
-
+          TARGETED_RELEASES_GITHUB_APP_CLIENT_ID: 214238
+          TARGETED_RELEASES_GITHUB_APP_PRIVATE_KEY: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
+        run: sbt "run ${{ inputs.target_pr }} targeted-scala-steward.conf"
       - name: Execute Scala Steward
         uses: scala-steward-org/scala-steward-action@v2.77.0
         with:
           github-app-id: 214238
           github-app-installation-id: 26822732
           github-app-key: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
-          repo-config: targeted-scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          repo-config: targeted-scala-steward.conf
           other-args: "--add-labels"
