@@ -75,16 +75,23 @@ object Artifact {
 
 object HelloWorld extends IOApp {
 
-  def run(args: List[String]) = (for {
-    installationAccess <- gitHubAppAuth.accessSoleInstallation()
-    _ <- IO.println(s"Hello, ${installationAccess.installedOnAccount.atLogin}!")
-    prId = PullRequest.Id.from(Uri.unsafeParse(args(0)))
-    outputFile = Path.of(args(1))
-    given GitHub = installationAccess.accountAccess().gitHub
-    pr <- summon[GitHub].getPullRequest(prId).map(_.result)
-    configOpt <- scalaStewardConfigForMostRecentPreviewReleaseOf(pr).value
-    _ <- IO(Files.writeString(outputFile, configOpt.map(_.text).mkString))
-  } yield println(s"Wrote config to ${outputFile.toAbsolutePath}")).as(ExitCode.Success)
+  def run(args: List[String]) = {
+    val prId = PullRequest.Id.from(Uri.unsafeParse(args(0)))
+    val outputFile = Path.of(args(1))
+    for {
+      installationAccess <- gitHubAppAuth.accessSoleInstallation()
+      _ <- IO.println(s"Hello, ${installationAccess.installedOnAccount.atLogin}!")
+      given GitHub = installationAccess.accountAccess().gitHub
+      pr <- summon[GitHub].getPullRequest(prId).map(_.result)
+      configOpt <- scalaStewardConfigForMostRecentPreviewReleaseOf(pr).value
+      _ <- IO {
+        configOpt.fold(println(s"Couldn't generate config for ${pr.html_url}")) { config =>
+          Files.writeString(outputFile, config.text)
+          println(s"Wrote config to ${outputFile.toAbsolutePath}")
+        }
+      }
+    } yield ()
+  }.as(ExitCode.Success)
 
   def scalaStewardConfigForMostRecentPreviewReleaseOf(pr: PullRequest)(using GitHub): OptionT[IO, Config] =
     findLatestPreviewVersionIn(pr).flatMap(version => scalaStewardConfigFor(pr, version))
