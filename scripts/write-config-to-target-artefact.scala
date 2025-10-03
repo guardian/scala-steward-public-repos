@@ -25,7 +25,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 val gitHubAppAuth: GitHubAppAuth = GitHubAppAuth.fromConfigMap(sys.env, "TARGETED_RELEASES")
 
 case class Config(
-  prId: PullRequest.Id,
+  pr: PullRequest,
   updates: NonEmptySet[Artifact]
 ) {
   val groupIds: NonEmptySet[String] = updates.map(_.groupId)
@@ -44,17 +44,17 @@ case class Config(
       |pullRequests.draft = true
       |commits.message = "$commitsMessage"
       |pullRequests.grouping = [{
-      |  name = "${prId.slug}",
-      |  title = "Update `${prId.repo.name}` to ${versions.toSortedSet.mkString(", ")}",
+      |  name = "${pr.prId.slug}",
+      |  title = "Update to `${pr.prId.repo.name}` PR #${pr.number} (`${pr.head.ref}`)",
       |  filter = [{"group" = "*"}]
       |}]
       |""".stripMargin
 }
 
 case class Artifact(groupId: String, artifactId: String, version: String) {
-  val artifactIdWithoutScalaVersion: String = artifactId.split('_').dropRight(1).mkString("_")
+  val artifactIdWithoutScalaOrSbtVersion: String = artifactId.split('_').head
 
-  lazy val withoutScalaVersion: Artifact = copy(artifactId = artifactIdWithoutScalaVersion)
+  lazy val withoutScalaVersion: Artifact = copy(artifactId = artifactIdWithoutScalaOrSbtVersion)
 }
 
 object Artifact {
@@ -87,7 +87,7 @@ object HelloWorld extends IOApp {
   } yield println(s"Wrote config to ${outputFile.toAbsolutePath}")).as(ExitCode.Success)
 
   def scalaStewardConfigForMostRecentPreviewReleaseOf(pr: PullRequest)(using GitHub): OptionT[IO, Config] =
-    findLatestPreviewVersionIn(pr).flatMap(version => scalaStewardConfigFor(pr.prId, version))
+    findLatestPreviewVersionIn(pr).flatMap(version => scalaStewardConfigFor(pr, version))
 
   def findLatestPreviewVersionIn(pr: PullRequest)(using GitHub): OptionT[IO,String] =
     OptionT(pr.comments2.list().filter(_.user.login == "gu-scala-library-release[bot]").map(findPreviewVersionIn).unNone.compile.last)
@@ -103,9 +103,9 @@ object HelloWorld extends IOApp {
   def artifactsFrom(tagMessage: String): Seq[Artifact] =
     tagMessage.linesIterator.filter(_.endsWith(".pom")).flatMap(Artifact.fromSha256PomLine).toSeq
 
-  def scalaStewardConfigFor(prId: PullRequest.Id, version: String)(using GitHub): OptionT[IO, Config] = OptionT(for {
-    tagMessage <- tagMessageFor(prId.repo, version)
+  def scalaStewardConfigFor(pr: PullRequest, version: String)(using GitHub): OptionT[IO, Config] = OptionT(for {
+    tagMessage <- tagMessageFor(pr.prId.repo, version)
   } yield for {
     artifacts <- NonEmptySet.fromSet(SortedSet.from(artifactsFrom(tagMessage)))
-  } yield Config(prId, artifacts.map(_.withoutScalaVersion)))
+  } yield Config(pr, artifacts.map(_.withoutScalaVersion)))
 }
