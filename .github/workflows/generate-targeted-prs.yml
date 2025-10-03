@@ -17,13 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          java-version: "21"
-          distribution: "corretto"
       - uses: coursier/cache-action@4e2615869d13561d626ed48655e1a39e5b192b3c
       - uses: VirtusLab/scala-cli-setup@77834b5926f3eb70869d8009530c65585f7a039b
+        with:
+          jvm: corretto:21.0.8.9.1 # 'scala-cli-setup' always installs a JVM, so we need to make sure it's the one we want
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
           TARGETED_RELEASES_GITHUB_APP_CLIENT_ID: 214238
