@@ -17,21 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-
-      - name: Install xq
-        run: sudo apt install -y xq
-
+      - uses: coursier/cache-action@4e2615869d13561d626ed48655e1a39e5b192b3c
+      - uses: VirtusLab/scala-cli-setup@77834b5926f3eb70869d8009530c65585f7a039b
+        with:
+          jvm: corretto:21.0.8.9.1 # 'scala-cli-setup' always installs a JVM, so we need to make sure it's the one we want
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_PR: ${{ inputs.target_pr }}
-        run: ./scripts/write-config-to-target-artefact.sh
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          java-version: "21"
-          distribution: "corretto"
+          TARGETED_RELEASES_GITHUB_APP_CLIENT_ID: 214238
+          TARGETED_RELEASES_GITHUB_APP_PRIVATE_KEY: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
+        run: |
+          ./scripts/write-config-to-target-artefact.scala ${{ inputs.target_pr }} targeted-scala-steward.conf
+          cat targeted-scala-steward.conf
 
       - name: Execute Scala Steward
         uses: scala-steward-org/scala-steward-action@v2.77.0
