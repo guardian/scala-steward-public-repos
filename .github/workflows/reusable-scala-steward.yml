@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: guardian/scala-steward-public-repos
           path: common-config
