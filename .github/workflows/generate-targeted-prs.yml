@@ -16,7 +16,7 @@ jobs:
     name: scala-steward
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: guardian/setup-scala@v1
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
