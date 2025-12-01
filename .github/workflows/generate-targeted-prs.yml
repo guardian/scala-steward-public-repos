@@ -24,7 +24,7 @@ jobs:
           TARGETED_RELEASES_GITHUB_APP_PRIVATE_KEY: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
         run: sbt "run ${{ inputs.target_pr }} targeted-scala-steward.conf"
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@v2.77.0
+        uses: scala-steward-org/scala-steward-action@v2.78.0
         with:
           github-app-id: 214238
           github-app-installation-id: 26822732
