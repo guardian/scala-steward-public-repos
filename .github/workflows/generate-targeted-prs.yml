@@ -16,15 +16,18 @@ jobs:
     name: scala-steward
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: guardian/setup-scala@v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      
+      - uses: guardian/setup-scala@cc7b39e238d789370aa98fa5f07e609b6527657d # v1.1.0
+      
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
           TARGETED_RELEASES_GITHUB_APP_CLIENT_ID: 214238
           TARGETED_RELEASES_GITHUB_APP_PRIVATE_KEY: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
         run: sbt "run ${{ inputs.target_pr }} targeted-scala-steward.conf"
+        
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@v2.80.0
+        uses: scala-steward-org/scala-steward-action@5bbb0a3f32b42774f8ba1ed18c29db5d915d2200 # v2.80.0
         with:
           github-app-id: 214238
           github-app-installation-id: 26822732
