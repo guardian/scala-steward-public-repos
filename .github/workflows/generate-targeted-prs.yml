@@ -27,7 +27,7 @@ jobs:
         run: sbt "run ${{ inputs.target_pr }} targeted-scala-steward.conf"
         
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@5bbb0a3f32b42774f8ba1ed18c29db5d915d2200 # v2.80.0
+        uses: scala-steward-org/scala-steward-action@e47786bae0a964b4202df1d66b65c581a53257b0 # v2.83.0
         with:
           github-app-id: 214238
           github-app-installation-id: 26822732
