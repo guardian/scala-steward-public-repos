@@ -34,11 +34,12 @@ jobs:
           distribution: "corretto"
 
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@df2a4cec1721d0b48be3e1d1f0acdf7543ea0fb4 # v2.84.0
+        uses: scala-steward-org/scala-steward-action@snapshots/785
         with:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
           github-app-key: ${{ secrets.private_key }}
+          scala-steward-version: 0.37.2-49-ec21d0d9-SNAPSHOT
           repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
           repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
           other-args: "--add-labels"
