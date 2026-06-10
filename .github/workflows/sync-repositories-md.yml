@@ -27,37 +27,40 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Regenerate REPOSITORIES.md from app installations
-        id: generate
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh api --paginate /installation/repositories \
-            --jq '.repositories[].full_name' | sort \
-            | grep -vxFf <(sed -n 's/^- //p' ./*-repositories.md 2>/dev/null) \
-            | sed 's/^/- /' > REPOSITORIES.md
+          # Fetch all repos where the GitHub App is installed, formatted as markdown list items
+          all_repos=$(gh api --paginate /installation/repositories \
+            --jq '.repositories[] | "- " + .full_name' | sort)
 
-          if git diff --quiet REPOSITORIES.md; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
-          fi
+          # Load repos already listed in other *-repositories.md files (e.g. devx-repositories.md)
+          excluded_repos=$(cat ./*-repositories.md)
 
-      - name: Create pull request
-        if: steps.generate.outputs.has_changes == 'true'
+          # Keep only repos that aren't already covered by a specific config file
+          echo "$all_repos" \
+            | grep -vxFf <(echo "$excluded_repos") \
+            > REPOSITORIES.md
+
+      - name: Open PR if changed
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           branch="sync-repositories-md"
-      
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add REPOSITORIES.md
-          git commit -m "Sync REPOSITORIES.md with app installations"
+
+          if ! git commit REPOSITORIES.md -m "Sync REPOSITORIES.md with app installations"; then
+            echo "No changes to commit, exiting."
+            exit 0
+          fi
+
           git push --force origin "$branch"
-      
+
           # Create PR only if one doesn't already exist for this branch
-          if ! gh pr list --head "$branch" --state open --json number --jq '.[0].number' | grep -q .; then
+          if [ "$(gh pr list --head "$branch" --state open --json number --jq 'length')" = "0" ]; then
             gh pr create \
               --title "Sync REPOSITORIES.md with app installations" \
               --body "Updates REPOSITORIES.md to match the repos that have the GitHub App installed."
