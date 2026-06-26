@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: guardian/scala-steward-public-repos
-          path: common-config
+          path: repo-config
 
       - name: Setup Java
         uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
@@ -39,6 +39,18 @@ jobs:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
           github-app-key: ${{ secrets.private_key }}
-          repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
-          repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          github-app-auth-only: true
+          repos-file: REPOSITORIES.md
+          repo-config: repo-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          other-args: "--add-labels"
+
+      - name: Execute Scala Steward (DevX)
+        uses: scala-steward-org/scala-steward-action@708c1d682b14b9785201afb25c8ffece0a9d126f # v2.90.0
+        with:
+          github-app-id: ${{ inputs.app_id }}
+          github-app-installation-id: ${{ inputs.app_installation_id }}
+          github-app-key: ${{ secrets.private_key }}
+          github-app-auth-only: true
+          repos-file: repo-config/devx-repositories.md
+          repo-config: repo-config/devx-scala-steward.conf
           other-args: "--add-labels"
