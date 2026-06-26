@@ -1,9 +1,6 @@
 name: Sync REPOSITORIES.md
 
 on:
-  push:
-  schedule:
-    - cron: "0 9 * * MON-FRI"
   workflow_dispatch:
 
 permissions:
