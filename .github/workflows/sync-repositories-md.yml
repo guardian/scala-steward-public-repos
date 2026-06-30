@@ -1,0 +1,64 @@
+name: Sync REPOSITORIES.md
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 214238
+          private-key: ${{ secrets.SCALA_STEWARD_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Regenerate REPOSITORIES.md from app installations
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # Fetch all repos where the GitHub App is installed, formatted as markdown list items
+          all_repos=$(gh api --paginate /installation/repositories \
+            --jq '.repositories[] | "- " + .full_name' | sort)
+
+          # Load repos already listed in other *-repositories.md files (e.g. devx-repositories.md)
+          excluded_repos=$(cat ./*-repositories.md)
+
+          # Keep only repos that aren't already covered by a specific config file
+          echo "$all_repos" \
+            | grep -vxFf <(echo "$excluded_repos") \
+            > REPOSITORIES.md
+
+      - name: Open PR if changed
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          branch="sync-repositories-md"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+
+          if ! git commit REPOSITORIES.md -m "Sync REPOSITORIES.md with app installations"; then
+            echo "No changes to commit, exiting."
+            exit 0
+          fi
+
+          git push --force origin "$branch"
+
+          # Create PR only if one doesn't already exist for this branch
+          if [ "$(gh pr list --head "$branch" --state open --json number --jq 'length')" = "0" ]; then
+            gh pr create \
+              --title "Sync REPOSITORIES.md with app installations" \
+              --body "Updates REPOSITORIES.md to match the repos that have the GitHub App installed."
+          fi
