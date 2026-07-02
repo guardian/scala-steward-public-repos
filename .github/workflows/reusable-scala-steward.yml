@@ -18,14 +18,34 @@ jobs:
     name: scala-steward
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        
-      - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ inputs.app_id }}
+          private-key: ${{ secrets.private_key }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout guardian/scala-steward-public-repos for config and exclusion files
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: guardian/scala-steward-public-repos
           path: repo-config
+
+      - name: Generate REPOSITORIES.md from app installations
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # Fetch all repos where the GitHub App is installed
+          all_repos=$(gh api --paginate /installation/repositories \
+            --jq '.repositories[] | "- " + .full_name' | sort)
+
+          # Exclude repos already covered by a specific *-repositories.md config
+          excluded_repos=$(cat repo-config/*-repositories.md)
+
+          echo "$all_repos" \
+            | grep -vxFf <(echo "$excluded_repos") \
+            > REPOSITORIES.md
 
       - name: Setup Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
@@ -41,17 +61,14 @@ jobs:
           github-app-key: ${{ secrets.private_key }}
           github-app-auth-only: true
           repos-file: REPOSITORIES.md
-          repo-config: repo-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          repo-config: repo-config/scala-steward.conf
           other-args: "--add-labels"
 
   scala-steward-devx:
     name: scala-steward-devx
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        
-      - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
+      - name: Checkout guardian/scala-steward-public-repos for config and repos list
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: guardian/scala-steward-public-repos
