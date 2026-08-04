@@ -28,6 +28,7 @@ jobs:
           app-id: ${{ inputs.app_id }}
           private-key: ${{ secrets.private_key }}
           owner: ${{ github.repository_owner }}
+          permission-metadata: read
 
       - name: Checkout guardian/scala-steward-public-repos for config and exclusion files
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
