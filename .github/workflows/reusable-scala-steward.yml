@@ -24,12 +24,14 @@ jobs:
       - name: Checkout caller's repo to obtain list of repos
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          ref: ja-per-team-config
           path: caller-repo
 
       - name: Checkout public repo to obtain config
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: guardian/scala-steward-public-repos
+          ref: ja-per-team-config
           path: public-repo
 
       - name: Setup Java
@@ -81,12 +83,14 @@ jobs:
       - name: Checkout caller's repo to obtain list of repos
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          ref: ja-per-team-config
           path: caller-repo
 
       - name: Checkout public repo to obtain config
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: guardian/scala-steward-public-repos
+          ref: ja-per-team-config
           path: public-repo
 
       - name: Setup Java
