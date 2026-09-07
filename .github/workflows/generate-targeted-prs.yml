@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       
-      - uses: guardian/setup-scala@4974dbb4daf1755835ef7baac0a3c65d6ea881bb # v1.1.2
+      - uses: guardian/setup-scala@c9f10cca1674ecb2ae7ee739786ef9f0cdb9d07c # v2.0.0
       
       - name: Write a custom scala-steward configuration to target a specific artifact
         env:
