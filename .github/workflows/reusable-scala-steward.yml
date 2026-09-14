@@ -13,19 +13,24 @@ on:
       private_key:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
-  scala-steward:
-    name: scala-steward
+  scala-steward-default:
+    name: scala-steward-default
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo for REPOSITORIES.md (which lists either public or private repos)
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        
-      - name: Checkout guardian/scala-steward-public-repos for our shared standard scala-steward.conf
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout caller's repo to obtain list of repos
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: caller-repo
+
+      - name: Checkout public repo to obtain config
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: guardian/scala-steward-public-repos
-          path: common-config
+          path: public-repo
 
       - name: Setup Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -33,12 +38,70 @@ jobs:
           java-version: "21"
           distribution: "corretto"
 
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
+        with:
+          app-id: ${{ inputs.app_id }}
+          private-key: ${{ secrets.private_key }}
+          owner: ${{ github.repository_owner }}
+          permission-metadata: read
+
+      - name: Generate REPOSITORIES.md from app installations
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # Fetch all repos where the GitHub App is installed
+          all_repos=$(gh api --paginate /installation/repositories \
+            --jq '.repositories[] | "- " + .full_name' | sort)
+
+          # Exclude repos already covered by a specific *-repositories.md config
+          excluded_repos=$(cat caller-repo/*-repositories.md)
+
+          # Write all_repos minus the ones in excluded_repos to repos-using-default-config.md
+          echo "$all_repos" \
+            | grep -vxFf <(echo "$excluded_repos") \
+            > repos-using-default-config.md
+
       - name: Execute Scala Steward
         uses: scala-steward-org/scala-steward-action@6162b21b93d4be314a61ce0462fd026630132fee # v2.96.0
         with:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
           github-app-key: ${{ secrets.private_key }}
-          repos-file: REPOSITORIES.md # possibly no longer necessary, thanks to `github-app-*` configuration
-          repo-config: common-config/scala-steward.conf # from checkout of guardian/scala-steward-public-repos
+          github-app-auth-only: true
+          repos-file: repos-using-default-config.md
+          repo-config: public-repo/scala-steward.conf
+          other-args: "--add-labels"
+
+  scala-steward-devx:
+    name: scala-steward-devx
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout caller's repo to obtain list of repos
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: caller-repo
+
+      - name: Checkout public repo to obtain config
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: guardian/scala-steward-public-repos
+          path: public-repo
+
+      - name: Setup Java
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          java-version: "21"
+          distribution: "corretto"
+
+      - name: Execute Scala Steward (DevX)
+        uses: scala-steward-org/scala-steward-action@ff09222640622d474d0d9f93c04aefedd125b187 # v2.92.0
+        with:
+          github-app-id: ${{ inputs.app_id }}
+          github-app-installation-id: ${{ inputs.app_installation_id }}
+          github-app-key: ${{ secrets.private_key }}
+          github-app-auth-only: true
+          repos-file: caller-repo/devx-repositories.md
+          repo-config: public-repo/devx-scala-steward.conf
           other-args: "--add-labels"
