@@ -64,7 +64,7 @@ jobs:
             > repos-using-default-config.md
 
       - name: Execute Scala Steward (DevX)
-        uses: scala-steward-org/scala-steward-action@6162b21b93d4be314a61ce0462fd026630132fee # v2.96.0
+        uses: jorgeazevedo/scala-steward-action@35d47ece33674934c3f7a446096dc54b6f6c98a0 # snapshots/fix-repeated-bootstrap
         with:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
@@ -75,7 +75,7 @@ jobs:
           other-args: "--add-labels"
 
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@6162b21b93d4be314a61ce0462fd026630132fee # v2.96.0
+        uses: jorgeazevedo/scala-steward-action@35d47ece33674934c3f7a446096dc54b6f6c98a0 # snapshots/fix-repeated-bootstrap
         with:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
