@@ -34,7 +34,7 @@ jobs:
           distribution: "corretto"
 
       - name: Execute Scala Steward
-        uses: scala-steward-org/scala-steward-action@6162b21b93d4be314a61ce0462fd026630132fee # v2.96.0
+        uses: scala-steward-org/scala-steward-action@3e5cae868160200afda12b57c150e56cede989ab # v2.97.0
         with:
           github-app-id: ${{ inputs.app_id }}
           github-app-installation-id: ${{ inputs.app_installation_id }}
